@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./ColorInput.css";
 
 export default function ColorInput({ id, defaultValue }) {
   const [inputColor, setInputColor] = useState(defaultValue);
@@ -24,6 +25,7 @@ export default function ColorInput({ id, defaultValue }) {
         id={id}
         value={inputColor}
         onChange={handleColorChange}
+        className="color-picker"
       />
     </>
   );

@@ -1,3 +1,19 @@
 .input-label {
   display: block;
+  margin-top: 10px;
+}
+
+.input-label:nth-of-type(1) {
+  margin-top: 0;
+}
+
+.input-form {
+  margin: 10px 10px;
+  margin-bottom: 30px;
+  padding: 10px;
+  background-color: #d4d3d3;
+}
+
+.submit-button {
+  margin-top: 20px;
 }
