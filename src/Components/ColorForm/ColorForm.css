@@ -8,10 +8,11 @@
 }
 
 .input-form {
+  width: fit-content;
   margin: 10px 10px;
   margin-bottom: 30px;
   padding: 10px;
-  background-color: #d4d3d3;
+  border: 1px solid gray;
 }
 
 .submit-button {
