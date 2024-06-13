@@ -1,15 +1,22 @@
 import "./ColorForm.css";
 import ColorInput from "../ColorInput/ColorInput";
 
-export default function ColorForm({ onColorSubmit }) {
+export default function ColorForm({ onAddColor }) {
   const initialData = {
     role: "Color name",
     hex: "#000000",
     contrastText: "#ffffff",
   };
 
+  function handleSubmit(event) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const data = Object.fromEntries(formData);
+    onAddColor(data);
+  }
+
   return (
-    <form className="input-form" onSubmit={onColorSubmit}>
+    <form className="input-form" onSubmit={handleSubmit}>
       <label htmlFor="crole" className="input-label">
         Role
       </label>
