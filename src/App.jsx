@@ -14,6 +14,10 @@ function App() {
     event.preventDefault();
     const formData = new FormData(event.target);
     const data = Object.fromEntries(formData);
+    handleAddColor(data);
+  }
+
+  function handleAddColor(data) {
     const newColor = {
       id: uid(6),
       role: data.role,
