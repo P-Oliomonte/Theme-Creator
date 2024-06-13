@@ -26,12 +26,17 @@ export default function Color({ color, onDelete }) {
       ) : (
         <>
           <p className="color-card-hightlight">Are you sure?</p>
-          <button type="button" onClick={handleToggleDelete}>
+          <button
+            type="button"
+            className="button-isDelete"
+            onClick={handleToggleDelete}
+          >
             CANCEL
           </button>
 
           <button
             type="button"
+            className="button-isDelete"
             onClick={() => {
               onDelete(color.id);
             }}
