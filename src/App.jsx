@@ -28,11 +28,16 @@ function App() {
     <>
       <h1>Theme Creator</h1>
       <ColorForm onAddColor={handleAddColor} />
-      {colors.map((color) => {
-        return (
-          <Color key={color.id} color={color} onDelete={handleDeleteColor} />
-        );
-      })}
+
+      {colors.length > 0 ? (
+        colors.map((color) => {
+          return (
+            <Color key={color.id} color={color} onDelete={handleDeleteColor} />
+          );
+        })
+      ) : (
+        <p className="paragraph_no-colors">No colors... start adding colors.</p>
+      )}
     </>
   );
 }
