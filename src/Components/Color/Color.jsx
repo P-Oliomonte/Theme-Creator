@@ -6,10 +6,11 @@ import useLocalStorageState from "use-local-storage-state";
 export default function Color({ color, onDelete, onUpdateColor }) {
   const [isDelete, setIsDelete] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
-  const [contrastEvaluation, setContrastEvaluation] = useLocalStorageState(
-    "contrastEvaluation",
-    { defaultValue: "loading..." }
-  );
+  const [contrastEvaluation, setContrastEvaluation] = useState("loading...");
+  // const [contrastEvaluation, setContrastEvaluation] = useLocalStorageState(
+  //   "contrastEvaluation",
+  //   { defaultValue: "loading..." }
+  // );
 
   console.log(color);
 
