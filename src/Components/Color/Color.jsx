@@ -52,7 +52,7 @@ export default function Color({ color, onDelete, onUpdateColor }) {
       <h4>{color.role}</h4>
       <p>contrast: {color.contrastText}</p>
 
-      {contrastEvaluation === "loading" && (
+      {contrastEvaluation === "loading..." && (
         <p
           className="contrast-check"
           style={{ backgroundColor: "gray", color: "white" }}
