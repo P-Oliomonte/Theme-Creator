@@ -6,8 +6,6 @@ import { uid } from "uid";
 import "./App.css";
 
 function App() {
-  // const [colors, setColors] = useState(initialColors);
-
   const [colors, setColors] = useLocalStorageState("themeColors", {
     defaultValue: initialColors,
   });
