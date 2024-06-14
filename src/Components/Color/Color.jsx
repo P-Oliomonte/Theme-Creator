@@ -1,18 +1,11 @@
 import "./Color.css";
 import ColorForm from "../ColorForm/ColorForm";
 import { useState, useEffect } from "react";
-import useLocalStorageState from "use-local-storage-state";
 
 export default function Color({ color, onDelete, onUpdateColor }) {
   const [isDelete, setIsDelete] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [contrastEvaluation, setContrastEvaluation] = useState("loading...");
-  // const [contrastEvaluation, setContrastEvaluation] = useLocalStorageState(
-  //   "contrastEvaluation",
-  //   { defaultValue: "loading..." }
-  // );
-
-  console.log(color);
 
   function handleToggleDelete() {
     setIsDelete(!isDelete);
@@ -28,6 +21,7 @@ export default function Color({ color, onDelete, onUpdateColor }) {
   }
 
   async function fetchColorCheck(color1, color2) {
+    setContrastEvaluation("loading...");
     const response = await fetch(
       "https://www.aremycolorsaccessible.com/api/are-they",
       {
@@ -44,7 +38,7 @@ export default function Color({ color, onDelete, onUpdateColor }) {
 
   useEffect(() => {
     fetchColorCheck(color.hex, color.contrastText);
-  }, [color]);
+  }, [color.hex, color.contrastText]);
 
   return (
     <div
@@ -57,7 +51,42 @@ export default function Color({ color, onDelete, onUpdateColor }) {
       <h3 className="color-card-hightlight">{color.hex}</h3>
       <h4>{color.role}</h4>
       <p>contrast: {color.contrastText}</p>
-      <p>Contrast Check ok? – {contrastEvaluation}</p>
+
+      {contrastEvaluation === "loading" && (
+        <p
+          className="contrast-check"
+          style={{ backgroundColor: "gray", color: "white" }}
+        >
+          Contrast check ok? – <strong>{contrastEvaluation}</strong>
+        </p>
+      )}
+
+      {contrastEvaluation === "Nope" && (
+        <p
+          className="contrast-check"
+          style={{ backgroundColor: "red", color: "white" }}
+        >
+          Contrast Check ok? – <strong>{contrastEvaluation}</strong>
+        </p>
+      )}
+
+      {contrastEvaluation === "Kinda" && (
+        <p
+          className="contrast-check"
+          style={{ backgroundColor: "orange", color: "white" }}
+        >
+          Contrast Check ok? – <strong>{contrastEvaluation}</strong>
+        </p>
+      )}
+
+      {contrastEvaluation === "Yup" && (
+        <p
+          className="contrast-check"
+          style={{ backgroundColor: "green", color: "white" }}
+        >
+          Contrast Check ok? – <strong>{contrastEvaluation}</strong>
+        </p>
+      )}
 
       {!isEdit && !isDelete && (
         <>
