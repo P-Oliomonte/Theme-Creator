@@ -31,43 +31,45 @@ export default function Color({ color, onDelete, onUpdateColor }) {
       <h4>{color.role}</h4>
       <p>contrast: {color.contrastText}</p>
 
-      {!isEdit ? (
-        !isDelete ? (
-          <>
-            <button type="button" onClick={handleToggleDelete}>
-              DELETE
-            </button>
-            <button
-              type="button"
-              className="button-with-space"
-              onClick={handleToggleEdit}
-            >
-              EDIT
-            </button>
-          </>
-        ) : (
-          <>
-            <p className="color-card-hightlight">Are you sure?</p>
-            <button
-              type="button"
-              className="button-with-space"
-              onClick={handleToggleDelete}
-            >
-              CANCEL
-            </button>
+      {!isEdit && !isDelete && (
+        <>
+          <button type="button" onClick={handleToggleDelete}>
+            DELETE
+          </button>
+          <button
+            type="button"
+            className="button-with-space"
+            onClick={handleToggleEdit}
+          >
+            EDIT
+          </button>
+        </>
+      )}
 
-            <button
-              type="button"
-              className="button-with-space"
-              onClick={() => {
-                onDelete(color.id);
-              }}
-            >
-              DELETE
-            </button>
-          </>
-        )
-      ) : (
+      {!isEdit && isDelete && (
+        <>
+          <p className="color-card-hightlight">Are you sure?</p>
+          <button
+            type="button"
+            className="button-with-space"
+            onClick={handleToggleDelete}
+          >
+            CANCEL
+          </button>
+
+          <button
+            type="button"
+            className="button-with-space"
+            onClick={() => {
+              onDelete(color.id);
+            }}
+          >
+            DELETE
+          </button>
+        </>
+      )}
+
+      {isEdit && (
         <>
           <ColorForm
             onAddColor={onUpdateData}
