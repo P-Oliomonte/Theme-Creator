@@ -1,10 +1,17 @@
 import "./Color.css";
 import ColorForm from "../ColorForm/ColorForm";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import useLocalStorageState from "use-local-storage-state";
 
 export default function Color({ color, onDelete, onUpdateColor }) {
   const [isDelete, setIsDelete] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
+  const [contrastEvaluation, setContrastEvaluation] = useLocalStorageState(
+    "contrastEvaluation",
+    { defaultValue: "loading..." }
+  );
+
+  console.log(color);
 
   function handleToggleDelete() {
     setIsDelete(!isDelete);
@@ -19,6 +26,25 @@ export default function Color({ color, onDelete, onUpdateColor }) {
     handleToggleEdit();
   }
 
+  async function fetchColorCheck(color1, color2) {
+    const response = await fetch(
+      "https://www.aremycolorsaccessible.com/api/are-they",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ colors: [color1, color2] }),
+      }
+    );
+    const responseData = await response.json();
+    setContrastEvaluation(responseData?.overall);
+  }
+
+  useEffect(() => {
+    fetchColorCheck(color.hex, color.contrastText);
+  }, [color]);
+
   return (
     <div
       className="color-card"
@@ -30,6 +56,7 @@ export default function Color({ color, onDelete, onUpdateColor }) {
       <h3 className="color-card-hightlight">{color.hex}</h3>
       <h4>{color.role}</h4>
       <p>contrast: {color.contrastText}</p>
+      <p>Contrast Check ok? – {contrastEvaluation}</p>
 
       {!isEdit && !isDelete && (
         <>
@@ -75,6 +102,7 @@ export default function Color({ color, onDelete, onUpdateColor }) {
             onAddColor={onUpdateData}
             color={color}
             content={"UPDATE COLOR"}
+            onFetchColorEvaluation={fetchColorCheck}
           />
           <button
             type="button"
