@@ -24,6 +24,22 @@ function App() {
     setColors(colors.filter((color) => color.id !== id));
   }
 
+  function handleUpdateColor(updatedColor, id) {
+    console.log("Updated color: ", updatedColor, "ID: ", id);
+    setColors(
+      colors.map((color) => {
+        return color.id === id
+          ? {
+              ...color,
+              role: updatedColor.role,
+              hex: updatedColor.hex,
+              contrastText: updatedColor.contrastText,
+            }
+          : color;
+      })
+    );
+  }
+
   return (
     <>
       <h1>Theme Creator</h1>
@@ -32,7 +48,12 @@ function App() {
       {colors.length > 0 ? (
         colors.map((color) => {
           return (
-            <Color key={color.id} color={color} onDelete={handleDeleteColor} />
+            <Color
+              key={color.id}
+              color={color}
+              onDelete={handleDeleteColor}
+              onUpdateColor={handleUpdateColor}
+            />
           );
         })
       ) : (

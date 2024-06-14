@@ -2,11 +2,9 @@ import "./Color.css";
 import ColorForm from "../ColorForm/ColorForm";
 import { useState } from "react";
 
-export default function Color({ color, onDelete }) {
+export default function Color({ color, onDelete, onUpdateColor }) {
   const [isDelete, setIsDelete] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
-
-  console.log(isEdit);
 
   function handleToggleDelete() {
     setIsDelete(!isDelete);
@@ -16,8 +14,8 @@ export default function Color({ color, onDelete }) {
     setIsEdit(!isEdit);
   }
 
-  function handleUpdateColor(id) {
-    console.log("Update");
+  function onUpdateData(updatedColor) {
+    onUpdateColor(updatedColor, color.id);
   }
 
   return (
@@ -31,8 +29,6 @@ export default function Color({ color, onDelete }) {
       <h3 className="color-card-hightlight">{color.hex}</h3>
       <h4>{color.role}</h4>
       <p>contrast: {color.contrastText}</p>
-
-      {/* Start ternary statement !isEdit */}
 
       {!isEdit ? (
         !isDelete ? (
@@ -71,12 +67,11 @@ export default function Color({ color, onDelete }) {
           </>
         )
       ) : (
-        //
         <>
           <ColorForm
-            onAddColor={() => {
-              handleUpdateColor(color.id);
-            }}
+            onAddColor={onUpdateData}
+            onUpdateClick={handleToggleEdit}
+            color={color}
             content={"UPDATE COLOR"}
           />
           <button
@@ -88,7 +83,6 @@ export default function Color({ color, onDelete }) {
           </button>
         </>
       )}
-      {/* End ternary statement isEdit */}
     </div>
   );
 }
