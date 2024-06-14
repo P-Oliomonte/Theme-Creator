@@ -21,7 +21,7 @@ export default function ColorInput({ id, defaultValue }) {
 
       <input
         type="color"
-        name="colorPicker"
+        // name="colorPicker"
         id={id}
         value={inputColor}
         onChange={handleColorChange}
