@@ -16,6 +16,7 @@ export default function Color({ color, onDelete, onUpdateColor }) {
 
   function onUpdateData(updatedColor) {
     onUpdateColor(updatedColor, color.id);
+    handleToggleEdit();
   }
 
   return (
@@ -70,7 +71,6 @@ export default function Color({ color, onDelete, onUpdateColor }) {
         <>
           <ColorForm
             onAddColor={onUpdateData}
-            onUpdateClick={handleToggleEdit}
             color={color}
             content={"UPDATE COLOR"}
           />

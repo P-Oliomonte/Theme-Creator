@@ -1,12 +1,7 @@
 import "./ColorForm.css";
 import ColorInput from "../ColorInput/ColorInput";
 
-export default function ColorForm({
-  onAddColor,
-  color,
-  content,
-  onUpdateClick,
-}) {
+export default function ColorForm({ onAddColor, color, content }) {
   const initialData = {
     role: "Color name",
     hex: "#000000",
@@ -18,7 +13,6 @@ export default function ColorForm({
     const formData = new FormData(event.target);
     const data = Object.fromEntries(formData);
     onAddColor(data);
-    content === "UPDATE COLOR" && onUpdateClick();
   }
 
   return (
