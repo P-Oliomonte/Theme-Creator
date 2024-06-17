@@ -1,3 +1,4 @@
+import "./Clipboard.css";
 import { useState } from "react";
 
 export default function Clipboard({ hexColor }) {
@@ -22,7 +23,11 @@ export default function Clipboard({ hexColor }) {
   //   }, [copyButtonText]);
 
   return (
-    <button type="button" onClick={() => handleCopyToClipboard(hexColor)}>
+    <button
+      className="button-with-space"
+      type="button"
+      onClick={() => handleCopyToClipboard(hexColor)}
+    >
       {copyButtonText}
     </button>
   );
