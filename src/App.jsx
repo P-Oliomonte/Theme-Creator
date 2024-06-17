@@ -10,8 +10,6 @@ function App() {
     defaultValue: initialColors,
   });
 
-  console.log(colors);
-
   function handleAddColor(data) {
     const newColor = {
       id: uid(6),
@@ -27,7 +25,6 @@ function App() {
   }
 
   function handleUpdateColor(updatedColor, id) {
-    console.log("Updated color: ", updatedColor, "ID: ", id);
     setColors(
       colors.map((color) => {
         return color.id === id

@@ -13,3 +13,32 @@
 .button-with-space {
   margin-left: 10px;
 }
+
+.contrast-check {
+  color: white;
+  font-size: 0.8rem;
+  width: fit-content;
+  padding: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border-radius: 2px;
+  border: 1px solid #3d3d3d;
+}
+
+.contrast-check-loading {
+  background-color: #9b9b9b;
+}
+
+.contrast-check-nope {
+  background-color: #ff3838;
+}
+
+.contrast-check-kinda {
+  background-color: #ffb62e;
+}
+
+.contrast-check-yup {
+  background-color: #4cb52c;
+}
