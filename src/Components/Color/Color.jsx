@@ -22,18 +22,31 @@ export default function Color({ color, onDelete, onUpdateColor }) {
 
   async function fetchColorCheck(color1, color2) {
     setContrastEvaluation("loading...");
-    const response = await fetch(
-      "https://www.aremycolorsaccessible.com/api/are-they",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ colors: [color1, color2] }),
+    try {
+      const response = await fetch(
+        "https://www.aremycolorsaccessible.com/api/are-they",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ colors: [color1, color2] }),
+        }
+      );
+
+      const responseData = await response.json();
+      setContrastEvaluation(responseData?.overall);
+
+      if (!response.ok) {
+        throw new Error(
+          "Sorry, there seems to be a problem: ",
+          response.status
+        );
       }
-    );
-    const responseData = await response.json();
-    setContrastEvaluation(responseData?.overall);
+    } catch (error) {
+      console.error("Error fetching color check:", error);
+      setContrastEvaluation("Loading error");
+    }
   }
 
   useEffect(() => {
@@ -52,38 +65,26 @@ export default function Color({ color, onDelete, onUpdateColor }) {
       <h4>{color.role}</h4>
       <p>contrast: {color.contrastText}</p>
 
-      {contrastEvaluation === "loading..." && (
-        <p
-          className="contrast-check"
-          style={{ backgroundColor: "gray", color: "white" }}
-        >
+      {contrastEvaluation === ("loading..." || "Loading error") && (
+        <p className="contrast-check contrast-check-loading">
           Contrast check ok? – <strong>{contrastEvaluation}</strong>
         </p>
       )}
 
       {contrastEvaluation === "Nope" && (
-        <p
-          className="contrast-check"
-          style={{ backgroundColor: "red", color: "white" }}
-        >
+        <p className="contrast-check contrast-check-nope">
           Contrast Check ok? – <strong>{contrastEvaluation}</strong>
         </p>
       )}
 
       {contrastEvaluation === "Kinda" && (
-        <p
-          className="contrast-check"
-          style={{ backgroundColor: "orange", color: "white" }}
-        >
+        <p className="contrast-check contrast-check-kinda">
           Contrast Check ok? – <strong>{contrastEvaluation}</strong>
         </p>
       )}
 
       {contrastEvaluation === "Yup" && (
-        <p
-          className="contrast-check"
-          style={{ backgroundColor: "green", color: "white" }}
-        >
+        <p className="contrast-check contrast-check-yup">
           Contrast Check ok? – <strong>{contrastEvaluation}</strong>
         </p>
       )}
