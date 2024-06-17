@@ -1,5 +1,6 @@
 import "./Color.css";
 import ColorForm from "../ColorForm/ColorForm";
+import Clipboard from "../Clipboard/Clipboard";
 import { useState, useEffect } from "react";
 
 export default function Color({ color, onDelete, onUpdateColor }) {
@@ -62,6 +63,7 @@ export default function Color({ color, onDelete, onUpdateColor }) {
       }}
     >
       <h3 className="color-card-hightlight">{color.hex}</h3>
+      <Clipboard hexColor={color.hex} />
       <h4>{color.role}</h4>
       <p>contrast: {color.contrastText}</p>
 
