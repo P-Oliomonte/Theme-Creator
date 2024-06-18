@@ -1,6 +1,5 @@
 import { initialColors } from "./lib/colors";
-import Color from "./Components/Color/Color";
-import ColorForm from "./Components/ColorForm/ColorForm";
+import Theme from "./Components/Theme/Theme";
 import useLocalStorageState from "use-local-storage-state";
 import { uid } from "uid";
 import "./App.css";
@@ -42,22 +41,12 @@ function App() {
   return (
     <>
       <h1>Theme Creator</h1>
-      <ColorForm content={"ADD COLOR"} onAddColor={handleAddColor} />
-
-      {colors.length > 0 ? (
-        colors.map((color) => {
-          return (
-            <Color
-              key={color.id}
-              color={color}
-              onDelete={handleDeleteColor}
-              onUpdateColor={handleUpdateColor}
-            />
-          );
-        })
-      ) : (
-        <p className="paragraph_no-colors">No colors... start adding colors.</p>
-      )}
+      <Theme
+        colors={colors}
+        onAddColor={handleAddColor}
+        onDeleteColor={handleDeleteColor}
+        onUpdateColor={handleUpdateColor}
+      />
     </>
   );
 }
