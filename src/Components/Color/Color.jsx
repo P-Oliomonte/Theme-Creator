@@ -135,7 +135,6 @@ export default function Color({ color, onDelete, onUpdateColor }) {
             onAddColor={onUpdateData}
             color={color}
             content={"UPDATE COLOR"}
-            onFetchColorEvaluation={fetchColorCheck}
           />
           <button
             type="button"
