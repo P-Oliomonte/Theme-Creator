@@ -20,37 +20,35 @@ export default function Color({ color, onDelete, onUpdateColor }) {
     onUpdateColor(updatedColor, color.id);
     handleToggleEdit();
   }
-
-  async function fetchColorCheck(color1, color2) {
-    setContrastEvaluation("loading...");
-    try {
-      const response = await fetch(
-        "https://www.aremycolorsaccessible.com/api/are-they",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ colors: [color1, color2] }),
-        }
-      );
-
-      const responseData = await response.json();
-      setContrastEvaluation(responseData?.overall);
-
-      if (!response.ok) {
-        throw new Error(
-          "Sorry, there seems to be a problem: ",
-          response.status
-        );
-      }
-    } catch (error) {
-      console.error("Error fetching color check:", error);
-      setContrastEvaluation("Loading error");
-    }
-  }
-
   useEffect(() => {
+    async function fetchColorCheck(color1, color2) {
+      setContrastEvaluation("loading...");
+      try {
+        const response = await fetch(
+          "https://www.aremycolorsaccessible.com/api/are-they",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ colors: [color1, color2] }),
+          }
+        );
+
+        const responseData = await response.json();
+        setContrastEvaluation(responseData?.overall);
+
+        if (!response.ok) {
+          throw new Error(
+            "Sorry, there seems to be a problem: ",
+            response.status
+          );
+        }
+      } catch (error) {
+        console.error("Error fetching color check:", error);
+        setContrastEvaluation("Loading error");
+      }
+    }
     fetchColorCheck(color.hex, color.contrastText);
   }, [color.hex, color.contrastText]);
 
