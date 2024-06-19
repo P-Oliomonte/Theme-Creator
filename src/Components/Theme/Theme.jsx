@@ -1,7 +1,5 @@
 import Color from "../Color/Color";
 import ColorForm from "../ColorForm/ColorForm";
-import useLocalStorageState from "use-local-storage-state";
-import { uid } from "uid";
 
 export default function Theme({
   colors,
@@ -9,6 +7,7 @@ export default function Theme({
   onDeleteColor,
   onUpdateColor,
 }) {
+  console.log(colors);
   return (
     <>
       <ColorForm content={"ADD COLOR"} onAddColor={onAddColor} />

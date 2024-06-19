@@ -1,4 +1,4 @@
-import { initialColors } from "./lib/colors";
+import { initialColors, initialThemes } from "./lib/colors";
 import Theme from "./Components/Theme/Theme";
 import useLocalStorageState from "use-local-storage-state";
 import { uid } from "uid";
@@ -8,6 +8,23 @@ function App() {
   const [colors, setColors] = useLocalStorageState("themeColors", {
     defaultValue: initialColors,
   });
+
+  const [themes, setThemes] = useLocalStorageState("themes", {
+    defaultValue: initialThemes,
+  });
+
+  const [currentTheme, setCurrentTheme] = useLocalStorageState("currentTheme", {
+    defaultValue: initialThemes[0],
+  });
+
+  function handleThemeChange(event) {
+    const themeName = event.target.value;
+    const filteredTheme = themes.filter((theme) => theme.name === themeName);
+    setCurrentTheme(filteredTheme[0]);
+  }
+
+  console.log("currentTheme: ", currentTheme);
+  console.log("currentThemeColors: ", currentTheme.colors);
 
   function handleAddColor(data) {
     const newColor = {
@@ -41,8 +58,9 @@ function App() {
   return (
     <>
       <h1>Theme Creator</h1>
+      <Select themes={themes} onHandleThemeChange={handleThemeChange} />
       <Theme
-        colors={colors}
+        colors={currentTheme.colors}
         onAddColor={handleAddColor}
         onDeleteColor={handleDeleteColor}
         onUpdateColor={handleUpdateColor}
@@ -52,3 +70,17 @@ function App() {
 }
 
 export default App;
+
+///////
+
+function Select({ themes, onHandleThemeChange }) {
+  return (
+    <form onChange={onHandleThemeChange}>
+      <select name="theme-select">
+        {themes.map((theme) => {
+          return <option key={theme.id}>{theme.name}</option>;
+        })}
+      </select>
+    </form>
+  );
+}

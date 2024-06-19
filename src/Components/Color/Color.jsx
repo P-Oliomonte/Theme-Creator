@@ -21,7 +21,7 @@ export default function Color({ color, onDelete, onUpdateColor }) {
     handleToggleEdit();
   }
   useEffect(() => {
-    async function fetchColorCheck(color1, color2) {
+    async function fetchColorCheck() {
       setContrastEvaluation("loading...");
       try {
         const response = await fetch(
@@ -31,7 +31,7 @@ export default function Color({ color, onDelete, onUpdateColor }) {
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({ colors: [color1, color2] }),
+            body: JSON.stringify({ colors: [color.hex, color.contrastText] }),
           }
         );
 
@@ -49,7 +49,7 @@ export default function Color({ color, onDelete, onUpdateColor }) {
         setContrastEvaluation("Loading error");
       }
     }
-    fetchColorCheck(color.hex, color.contrastText);
+    fetchColorCheck();
   }, [color.hex, color.contrastText]);
 
   return (
