@@ -7,7 +7,6 @@ export default function Theme({
   onDeleteColor,
   onUpdateColor,
 }) {
-  console.log(colors);
   return (
     <>
       <ColorForm content={"ADD COLOR"} onAddColor={onAddColor} />

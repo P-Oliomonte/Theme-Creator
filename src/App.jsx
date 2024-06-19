@@ -1,15 +1,11 @@
 import { initialThemes } from "./lib/colors";
 import Theme from "./Components/Theme/Theme";
+import ThemeSelect from "./Components/ThemeSelect/ThemeSelect";
 import useLocalStorageState from "use-local-storage-state";
 import { uid } from "uid";
 import "./App.css";
-import { useState } from "react";
 
 function App() {
-  // const [colors, setColors] = useLocalStorageState("themeColors", {
-  //   defaultValue: initialColors,
-  // });
-
   const [themes, setThemes] = useLocalStorageState("themes", {
     defaultValue: initialThemes,
   });
@@ -18,9 +14,9 @@ function App() {
     defaultValue: initialThemes[0],
   });
 
-  console.log("themes: ", themes);
-  console.log("currentTheme: ", currentTheme);
-  console.log("currentThemeColors: ", currentTheme.colors);
+  // console.log("themes: ", themes);
+  // console.log("currentTheme: ", currentTheme);
+  // console.log("currentThemeColors: ", currentTheme.colors);
 
   function handleThemeChange(event) {
     const themeName = event.target.value;
@@ -107,7 +103,7 @@ function App() {
       name: newThemeName,
       colors: [],
     };
-    const updatedThemes = [newTheme, ...themes];
+    const updatedThemes = [...themes, newTheme];
 
     setThemes(updatedThemes);
 
@@ -117,13 +113,43 @@ function App() {
     setCurrentTheme(updatedCurrentTheme);
   }
 
+  function handleThemeEdit(editedThemeName) {
+    const updatedThemes = themes.map((theme) => {
+      if (theme.name === currentTheme.name) {
+        return {
+          ...theme,
+          name: editedThemeName,
+        };
+      }
+      return theme;
+    });
+    setThemes(updatedThemes);
+
+    const updatedCurrentTheme = updatedThemes.find(
+      (theme) => theme.name === editedThemeName
+    );
+    setCurrentTheme(updatedCurrentTheme);
+  }
+
+  function handleDeleteTheme() {
+    const updatedThemes = themes.filter(
+      (theme) => theme.name !== currentTheme.name
+    );
+
+    setThemes(updatedThemes);
+    setCurrentTheme(updatedThemes[0]);
+  }
+
   return (
     <>
       <h1>Theme Creator</h1>
-      <Select
+      <ThemeSelect
         themes={themes}
+        name={currentTheme.name}
         onHandleThemeChange={handleThemeChange}
         onHandleSubmitTheme={handleSubmitTheme}
+        onHandleThemeEdit={handleThemeEdit}
+        onHandleDeleteTheme={handleDeleteTheme}
       />
       <Theme
         colors={currentTheme.colors}
@@ -136,61 +162,3 @@ function App() {
 }
 
 export default App;
-
-///////
-
-function Select({ themes, onHandleThemeChange, onHandleSubmitTheme }) {
-  const [isAdd, setIsAdd] = useState(false);
-
-  function handleToggleAdd() {
-    setIsAdd(!isAdd);
-  }
-  function handleNewThemeForm(event) {
-    event.preventDefault();
-    const formData = new FormData(event.target);
-    const data = Object.fromEntries(formData);
-    onHandleSubmitTheme(data.themeName);
-    handleToggleAdd();
-  }
-
-  return (
-    <>
-      {!isAdd && (
-        <>
-          <form onChange={onHandleThemeChange}>
-            <select name="theme-select">
-              {themes.map((theme) => {
-                return <option key={theme.id}>{theme.name}</option>;
-              })}
-            </select>
-          </form>
-
-          <button type="button" name="add-to-toggle" onClick={handleToggleAdd}>
-            ADD
-          </button>
-        </>
-      )}
-
-      {isAdd && (
-        <>
-          <form onSubmit={handleNewThemeForm}>
-            <label htmlFor="add-theme-name">Theme Name</label>
-            <input
-              id="add-theme-name"
-              type="text"
-              name="themeName"
-              defaultValue="New theme name"
-            />
-            <button type="submit" name="add-to-add">
-              ADD
-            </button>
-          </form>
-
-          <button type="button" name="cancel" onClick={handleToggleAdd}>
-            CANCEL
-          </button>
-        </>
-      )}
-    </>
-  );
-}

@@ -1,0 +1,37 @@
+.theme-select {
+  width: fit-content;
+  margin: 10px 10px;
+  margin-bottom: 30px;
+  padding: 10px;
+  border: 1px solid gray;
+}
+
+.button {
+  margin-top: 20px;
+}
+
+.button-with-space {
+  margin-left: 10px;
+}
+
+.input-label {
+  display: block;
+}
+
+.input {
+  display: block;
+}
+
+.theme-name {
+  margin-top: 10px;
+  background-color: black;
+  padding: 5px;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  border-radius: 2px;
+}
+
+.sure-to-delet-theme {
+  font-weight: bold;
+}
