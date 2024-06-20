@@ -1,6 +1,14 @@
+.color-input-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
 .color-picker {
   margin-left: 10px;
   height: 30px;
-  position: relative;
-  top: 3px;
+  flex-shrink: 0;
+}
+
+.color-input {
+  flex-grow: 1;
 }

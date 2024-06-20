@@ -1,9 +1,16 @@
 .theme-select {
-  width: fit-content;
-  margin: 10px 10px;
+  width: 300px;
+  margin: 10px;
   margin-bottom: 30px;
   padding: 10px;
   border: 1px solid gray;
+}
+
+.dropdown {
+  width: 100%;
+  height: 34px;
+  font-size: 1.2rem;
+  font-weight: bold;
 }
 
 .button {
@@ -32,6 +39,6 @@
   border-radius: 2px;
 }
 
-.sure-to-delet-theme {
+.sure-to-delete-theme {
   font-weight: bold;
 }

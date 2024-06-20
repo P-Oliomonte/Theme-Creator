@@ -14,10 +14,6 @@ function App() {
     defaultValue: initialThemes[0],
   });
 
-  // console.log("themes: ", themes);
-  // console.log("currentTheme: ", currentTheme);
-  // console.log("currentThemeColors: ", currentTheme.colors);
-
   function handleThemeChange(event) {
     const themeName = event.target.value;
     const filteredTheme = themes.filter((theme) => theme.name === themeName);
@@ -50,10 +46,8 @@ function App() {
   }
 
   function handleDeleteColor(id) {
-    console.log("DELETE");
-
     const updatedThemes = themes.map((theme) => {
-      if ((theme.name = currentTheme.name)) {
+      if (theme.name === currentTheme.name) {
         return {
           ...theme,
           colors: theme.colors.filter((color) => color.id !== id),
@@ -145,14 +139,15 @@ function App() {
       <h1>Theme Creator</h1>
       <ThemeSelect
         themes={themes}
-        name={currentTheme.name}
-        onHandleThemeChange={handleThemeChange}
-        onHandleSubmitTheme={handleSubmitTheme}
-        onHandleThemeEdit={handleThemeEdit}
-        onHandleDeleteTheme={handleDeleteTheme}
+        name={themes.length > 0 ? currentTheme.name : "Add new theme"}
+        onThemeChange={handleThemeChange}
+        onSubmitTheme={handleSubmitTheme}
+        onThemeEdit={handleThemeEdit}
+        onDeleteTheme={handleDeleteTheme}
       />
       <Theme
-        colors={currentTheme.colors}
+        themes={themes}
+        colors={themes.length > 0 ? currentTheme.colors : ""}
         onAddColor={handleAddColor}
         onDeleteColor={handleDeleteColor}
         onUpdateColor={handleUpdateColor}

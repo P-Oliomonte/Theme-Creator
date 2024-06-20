@@ -4,56 +4,51 @@ import "./ThemeSelect.css";
 export default function ThemeSelect({
   themes,
   name,
-  onHandleThemeChange,
-  onHandleSubmitTheme,
-  onHandleThemeEdit,
-  onHandleDeleteTheme,
+  onThemeChange,
+  onSubmitTheme,
+  onThemeEdit,
+  onDeleteTheme,
 }) {
-  const [isAdd, setIsAdd] = useState(false);
-  const [isEdit, setIsEdit] = useState(false);
-  const [isDelete, setIsDelete] = useState(false);
-
-  function handleToggleIsAdd() {
-    setIsAdd(!isAdd);
-  }
-
-  function handleToggleIsEdit() {
-    setIsEdit(!isEdit);
-  }
-
-  function handleToggleIsDelete() {
-    setIsDelete(!isDelete);
-  }
+  const [mode, setMode] = useState("");
 
   function handleNewThemeForm(event) {
     event.preventDefault();
     const formData = new FormData(event.target);
     const data = Object.fromEntries(formData);
-    onHandleSubmitTheme(data.themeName);
-    handleToggleIsAdd();
+    onSubmitTheme(data.themeName);
+    setMode("");
   }
 
   function handleThemeEdit(event) {
     event.preventDefault();
     const formData = new FormData(event.target);
     const data = Object.fromEntries(formData);
-    onHandleThemeEdit(data.themeName);
-    handleToggleIsEdit();
+    onThemeEdit(data.themeName);
+    setMode("");
   }
 
   function handleDelete() {
-    onHandleDeleteTheme();
-    handleToggleIsDelete();
+    onDeleteTheme();
+    setMode("");
   }
 
   return (
     <div className="theme-select">
-      {!isAdd && !isEdit && !isDelete && (
+      {mode === "" && (
         <>
-          <form onChange={onHandleThemeChange}>
-            <select name="theme-select" value={name}>
+          <form onChange={onThemeChange}>
+            <select
+              className="dropdown"
+              name="theme-select"
+              defaultValue={name}
+            >
+              {themes.length === 0 && <option value="">Add new theme</option>}
               {themes.map((theme) => {
-                return <option key={theme.id}>{theme.name}</option>;
+                return (
+                  <option key={theme.id} value={theme.name}>
+                    {theme.name}
+                  </option>
+                );
               })}
             </select>
           </form>
@@ -62,7 +57,7 @@ export default function ThemeSelect({
             className="button"
             type="button"
             name="add-to-toggle"
-            onClick={handleToggleIsAdd}
+            onClick={() => setMode("add")}
           >
             ADD
           </button>
@@ -70,7 +65,7 @@ export default function ThemeSelect({
             className="button button-with-space"
             type="button"
             name="edit-theme-name"
-            onClick={handleToggleIsEdit}
+            onClick={() => setMode("edit")}
           >
             EDIT
           </button>
@@ -78,14 +73,14 @@ export default function ThemeSelect({
             className="button button-with-space"
             type="button"
             name="delete-theme"
-            onClick={handleToggleIsDelete}
+            onClick={() => setMode("delete")}
           >
             DELETE
           </button>
         </>
       )}
 
-      {isEdit && (
+      {mode === "edit" && (
         <>
           <form onSubmit={handleThemeEdit}>
             <label className="input-label" htmlFor="add-theme-name">
@@ -98,22 +93,26 @@ export default function ThemeSelect({
               name="themeName"
               defaultValue={name}
             />
-            <button className="button" type="submit" name="add-to-add">
-              EDIT
+            <button
+              className="button"
+              type="button"
+              name="cancel"
+              onClick={() => setMode("")}
+            >
+              CANCEL
             </button>
             <button
               className="button button-with-space"
-              type="button"
-              name="cancel"
-              onClick={handleToggleIsEdit}
+              type="submit"
+              name="add-to-add"
             >
-              CANCEL
+              EDIT
             </button>
           </form>
         </>
       )}
 
-      {isAdd && (
+      {mode === "add" && (
         <>
           <form onSubmit={handleNewThemeForm}>
             <label className="input-label" htmlFor="add-theme-name">
@@ -126,41 +125,46 @@ export default function ThemeSelect({
               name="themeName"
               defaultValue="New theme name"
             />
-            <button className="button" type="submit" name="add-to-add">
-              ADD
+            <button
+              className="button"
+              type="button"
+              name="cancel"
+              onClick={() => setMode("")}
+            >
+              CANCEL
             </button>
             <button
               className="button button-with-space"
-              type="button"
-              name="cancel"
-              onClick={handleToggleIsAdd}
+              type="submit"
+              name="add-to-add"
             >
-              CANCEL
+              ADD
             </button>
           </form>
         </>
       )}
 
-      {isDelete && (
+      {mode === "delete" && (
         <>
-          <p className="sure-to-delet-theme">Are you sure you want to delete</p>
+          <p className="sure-to-delete-theme">
+            Are you sure you want to delete
+          </p>
           <h3 className="theme-name">{name}?</h3>
           <button
             className="button"
+            type="button"
+            name="cancel"
+            onClick={() => setMode("")}
+          >
+            CANCEL
+          </button>
+          <button
+            className="button button-with-space"
             type="button"
             name="add-to-add"
             onClick={handleDelete}
           >
             DELETE
-          </button>
-
-          <button
-            className="button button-with-space"
-            type="button"
-            name="cancel"
-            onClick={handleToggleIsDelete}
-          >
-            CANCEL
           </button>
         </>
       )}

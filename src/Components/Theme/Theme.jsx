@@ -1,7 +1,9 @@
 import Color from "../Color/Color";
 import ColorForm from "../ColorForm/ColorForm";
+import "./Theme.css";
 
 export default function Theme({
+  themes,
   colors,
   onAddColor,
   onDeleteColor,
@@ -9,21 +11,31 @@ export default function Theme({
 }) {
   return (
     <>
-      <ColorForm content={"ADD COLOR"} onAddColor={onAddColor} />
+      {themes.length > 0 && (
+        <div>
+          <ColorForm content="ADD COLOR" onAddColor={onAddColor} />
 
-      {colors.length > 0 ? (
-        colors.map((color) => {
-          return (
-            <Color
-              key={color.id}
-              color={color}
-              onDelete={onDeleteColor}
-              onUpdateColor={onUpdateColor}
-            />
-          );
-        })
-      ) : (
-        <p className="paragraph_no-colors">No colors... start adding colors.</p>
+          {colors.length > 0 ? (
+            colors.map((color) => {
+              return (
+                <Color
+                  key={color.id}
+                  color={color}
+                  onDelete={onDeleteColor}
+                  onUpdateColor={onUpdateColor}
+                />
+              );
+            })
+          ) : (
+            <p className="paragraph_no-colors">
+              No colors... start adding colors.
+            </p>
+          )}
+        </div>
+      )}
+
+      {themes.length === 0 && (
+        <p className="paragraph_no-colors">No themes... add a theme.</p>
       )}
     </>
   );
