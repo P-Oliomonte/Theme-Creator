@@ -1,14 +1,24 @@
-import { initialColors } from "./lib/colors";
-import Color from "./Components/Color/Color";
-import ColorForm from "./Components/ColorForm/ColorForm";
+import { initialThemes } from "./lib/colors";
+import Theme from "./Components/Theme/Theme";
+import ThemeSelect from "./Components/ThemeSelect/ThemeSelect";
 import useLocalStorageState from "use-local-storage-state";
 import { uid } from "uid";
 import "./App.css";
 
 function App() {
-  const [colors, setColors] = useLocalStorageState("themeColors", {
-    defaultValue: initialColors,
+  const [themes, setThemes] = useLocalStorageState("themes", {
+    defaultValue: initialThemes,
   });
+
+  const [currentTheme, setCurrentTheme] = useLocalStorageState("currentTheme", {
+    defaultValue: initialThemes[0],
+  });
+
+  function handleThemeChange(event) {
+    const themeName = event.target.value;
+    const filteredTheme = themes.filter((theme) => theme.name === themeName);
+    setCurrentTheme(filteredTheme[0]);
+  }
 
   function handleAddColor(data) {
     const newColor = {
@@ -17,47 +27,131 @@ function App() {
       hex: data.hex,
       contrastText: data.contrastText,
     };
-    setColors([newColor, ...colors]);
+
+    const updatedThemes = themes.map((theme) => {
+      if (theme.name === currentTheme.name) {
+        return {
+          ...theme,
+          colors: [newColor, ...theme.colors],
+        };
+      }
+      return theme;
+    });
+    setThemes(updatedThemes);
+
+    const updatedCurrentTheme = updatedThemes.find(
+      (theme) => theme.name === currentTheme.name
+    );
+    setCurrentTheme(updatedCurrentTheme);
   }
 
   function handleDeleteColor(id) {
-    setColors(colors.filter((color) => color.id !== id));
+    const updatedThemes = themes.map((theme) => {
+      if (theme.name === currentTheme.name) {
+        return {
+          ...theme,
+          colors: theme.colors.filter((color) => color.id !== id),
+        };
+      }
+      return theme;
+    });
+    setThemes(updatedThemes);
+
+    const updatedCurrentTheme = updatedThemes.find(
+      (theme) => theme.name === currentTheme.name
+    );
+    setCurrentTheme(updatedCurrentTheme);
   }
 
   function handleUpdateColor(updatedColor, id) {
-    setColors(
-      colors.map((color) => {
-        return color.id === id
-          ? {
-              ...color,
-              role: updatedColor.role,
-              hex: updatedColor.hex,
-              contrastText: updatedColor.contrastText,
-            }
-          : color;
-      })
+    const updatedThemes = themes.map((theme) => {
+      if (theme.name === currentTheme.name) {
+        return {
+          ...theme,
+          colors: theme.colors.map((color) => {
+            return color.id === id
+              ? {
+                  ...color,
+                  role: updatedColor.role,
+                  hex: updatedColor.hex,
+                  contrastText: updatedColor.contrastText,
+                }
+              : color;
+          }),
+        };
+      }
+      return theme;
+    });
+
+    setThemes(updatedThemes);
+
+    const updatedCurrentTheme = updatedThemes.find(
+      (theme) => theme.name === currentTheme.name
     );
+    setCurrentTheme(updatedCurrentTheme);
+  }
+
+  function handleSubmitTheme(newThemeName) {
+    const newTheme = {
+      id: uid(6),
+      name: newThemeName,
+      colors: [],
+    };
+    const updatedThemes = [...themes, newTheme];
+
+    setThemes(updatedThemes);
+
+    const updatedCurrentTheme = updatedThemes.find(
+      (theme) => theme.name === newThemeName
+    );
+    setCurrentTheme(updatedCurrentTheme);
+  }
+
+  function handleThemeEdit(editedThemeName) {
+    const updatedThemes = themes.map((theme) => {
+      if (theme.name === currentTheme.name) {
+        return {
+          ...theme,
+          name: editedThemeName,
+        };
+      }
+      return theme;
+    });
+    setThemes(updatedThemes);
+
+    const updatedCurrentTheme = updatedThemes.find(
+      (theme) => theme.name === editedThemeName
+    );
+    setCurrentTheme(updatedCurrentTheme);
+  }
+
+  function handleDeleteTheme() {
+    const updatedThemes = themes.filter(
+      (theme) => theme.name !== currentTheme.name
+    );
+
+    setThemes(updatedThemes);
+    setCurrentTheme(updatedThemes[0]);
   }
 
   return (
     <>
       <h1>Theme Creator</h1>
-      <ColorForm content={"ADD COLOR"} onAddColor={handleAddColor} />
-
-      {colors.length > 0 ? (
-        colors.map((color) => {
-          return (
-            <Color
-              key={color.id}
-              color={color}
-              onDelete={handleDeleteColor}
-              onUpdateColor={handleUpdateColor}
-            />
-          );
-        })
-      ) : (
-        <p className="paragraph_no-colors">No colors... start adding colors.</p>
-      )}
+      <ThemeSelect
+        themes={themes}
+        name={themes.length > 0 ? currentTheme.name : "Add new theme"}
+        onThemeChange={handleThemeChange}
+        onSubmitTheme={handleSubmitTheme}
+        onThemeEdit={handleThemeEdit}
+        onDeleteTheme={handleDeleteTheme}
+      />
+      <Theme
+        themes={themes}
+        colors={themes.length > 0 ? currentTheme.colors : ""}
+        onAddColor={handleAddColor}
+        onDeleteColor={handleDeleteColor}
+        onUpdateColor={handleUpdateColor}
+      />
     </>
   );
 }

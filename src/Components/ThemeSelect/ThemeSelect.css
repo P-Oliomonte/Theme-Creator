@@ -1,0 +1,44 @@
+.theme-select {
+  width: 300px;
+  margin: 10px;
+  margin-bottom: 30px;
+  padding: 10px;
+  border: 1px solid gray;
+}
+
+.dropdown {
+  width: 100%;
+  height: 34px;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.button {
+  margin-top: 20px;
+}
+
+.button-with-space {
+  margin-left: 10px;
+}
+
+.input-label {
+  display: block;
+}
+
+.input {
+  display: block;
+}
+
+.theme-name {
+  margin-top: 10px;
+  background-color: black;
+  padding: 5px;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  border-radius: 2px;
+}
+
+.sure-to-delete-theme {
+  font-weight: bold;
+}

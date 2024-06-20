@@ -21,6 +21,7 @@ export default function ColorForm({ onAddColor, color, content }) {
         Role
       </label>
       <input
+        className="input"
         name="role"
         id="role"
         type="text"

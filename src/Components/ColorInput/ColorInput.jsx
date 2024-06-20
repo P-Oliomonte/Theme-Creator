@@ -10,8 +10,9 @@ export default function ColorInput({ id, defaultValue }) {
   }
 
   return (
-    <>
+    <div className="color-input-container">
       <input
+        className="color-input"
         type="text"
         name={id}
         id={id}
@@ -21,12 +22,11 @@ export default function ColorInput({ id, defaultValue }) {
 
       <input
         type="color"
-        // name="colorPicker"
         id={id}
         value={inputColor}
         onChange={handleColorChange}
         className="color-picker"
       />
-    </>
+    </div>
   );
 }

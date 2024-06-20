@@ -4,24 +4,27 @@ import Clipboard from "../Clipboard/Clipboard";
 import { useState, useEffect } from "react";
 
 export default function Color({ color, onDelete, onUpdateColor }) {
-  const [isDelete, setIsDelete] = useState(false);
-  const [isEdit, setIsEdit] = useState(false);
+  const [mode, setMode] = useState("");
   const [contrastEvaluation, setContrastEvaluation] = useState("loading...");
 
-  function handleToggleDelete() {
-    setIsDelete(!isDelete);
-  }
-
-  function handleToggleEdit() {
-    setIsEdit(!isEdit);
-  }
+  const className =
+    contrastEvaluation === "loading..." ||
+    contrastEvaluation === "Loading error"
+      ? "contrast-check contrast-check-loading"
+      : contrastEvaluation === "Nope"
+      ? "contrast-check contrast-check-nope"
+      : contrastEvaluation === "Kinda"
+      ? "contrast-check contrast-check-kinda"
+      : contrastEvaluation === "Yup"
+      ? "contrast-check contrast-check-yup"
+      : "contrast-check";
 
   function onUpdateData(updatedColor) {
     onUpdateColor(updatedColor, color.id);
-    handleToggleEdit();
+    setMode("");
   }
   useEffect(() => {
-    async function fetchColorCheck(color1, color2) {
+    async function fetchColorCheck() {
       setContrastEvaluation("loading...");
       try {
         const response = await fetch(
@@ -31,7 +34,7 @@ export default function Color({ color, onDelete, onUpdateColor }) {
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({ colors: [color1, color2] }),
+            body: JSON.stringify({ colors: [color.hex, color.contrastText] }),
           }
         );
 
@@ -49,7 +52,7 @@ export default function Color({ color, onDelete, onUpdateColor }) {
         setContrastEvaluation("Loading error");
       }
     }
-    fetchColorCheck(color.hex, color.contrastText);
+    fetchColorCheck();
   }, [color.hex, color.contrastText]);
 
   return (
@@ -65,52 +68,32 @@ export default function Color({ color, onDelete, onUpdateColor }) {
       <h4>{color.role}</h4>
       <p>contrast: {color.contrastText}</p>
 
-      {contrastEvaluation === ("loading..." || "Loading error") && (
-        <p className="contrast-check contrast-check-loading">
-          Contrast check ok? – <strong>{contrastEvaluation}</strong>
-        </p>
-      )}
+      <p className={className}>
+        Contrast check ok? – <strong>{contrastEvaluation}</strong>
+      </p>
 
-      {contrastEvaluation === "Nope" && (
-        <p className="contrast-check contrast-check-nope">
-          Contrast Check ok? – <strong>{contrastEvaluation}</strong>
-        </p>
-      )}
-
-      {contrastEvaluation === "Kinda" && (
-        <p className="contrast-check contrast-check-kinda">
-          Contrast Check ok? – <strong>{contrastEvaluation}</strong>
-        </p>
-      )}
-
-      {contrastEvaluation === "Yup" && (
-        <p className="contrast-check contrast-check-yup">
-          Contrast Check ok? – <strong>{contrastEvaluation}</strong>
-        </p>
-      )}
-
-      {!isEdit && !isDelete && (
+      {mode === "" && (
         <>
-          <button type="button" onClick={handleToggleDelete}>
+          <button type="button" onClick={() => setMode("delete")}>
             DELETE
           </button>
           <button
             type="button"
             className="button-with-space"
-            onClick={handleToggleEdit}
+            onClick={() => setMode("edit")}
           >
             EDIT
           </button>
         </>
       )}
 
-      {!isEdit && isDelete && (
+      {mode === "delete" && (
         <>
           <p className="color-card-hightlight">Are you sure?</p>
           <button
             type="button"
             className="button-with-space"
-            onClick={handleToggleDelete}
+            onClick={() => setMode("")}
           >
             CANCEL
           </button>
@@ -127,20 +110,20 @@ export default function Color({ color, onDelete, onUpdateColor }) {
         </>
       )}
 
-      {isEdit && (
+      {mode === "edit" && (
         <>
+          <button
+            type="button"
+            className="button-with-space"
+            onClick={() => setMode("")}
+          >
+            CANCEL
+          </button>
           <ColorForm
             onAddColor={onUpdateData}
             color={color}
             content={"UPDATE COLOR"}
           />
-          <button
-            type="button"
-            className="button-with-space"
-            onClick={handleToggleEdit}
-          >
-            CANCEL
-          </button>
         </>
       )}
     </div>
