@@ -4,6 +4,7 @@ import "./ThemeSelect.css";
 export default function ThemeSelect({
   themes,
   name,
+  currentTheme,
   onThemeChange,
   onSubmitTheme,
   onThemeEdit,
@@ -74,6 +75,7 @@ export default function ThemeSelect({
             type="button"
             name="delete-theme"
             onClick={() => setMode("delete")}
+            disabled={currentTheme.id === "t1"}
           >
             DELETE
           </button>

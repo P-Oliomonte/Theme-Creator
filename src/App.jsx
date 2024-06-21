@@ -140,6 +140,7 @@ function App() {
       <ThemeSelect
         themes={themes}
         name={themes.length > 0 ? currentTheme.name : "Add new theme"}
+        currentTheme={currentTheme}
         onThemeChange={handleThemeChange}
         onSubmitTheme={handleSubmitTheme}
         onThemeEdit={handleThemeEdit}
