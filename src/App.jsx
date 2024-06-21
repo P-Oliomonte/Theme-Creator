@@ -139,7 +139,7 @@ function App() {
       <h1>Theme Creator</h1>
       <ThemeSelect
         themes={themes}
-        name={themes.length > 0 ? currentTheme.name : "Add new theme"}
+        name={currentTheme.name}
         currentTheme={currentTheme}
         onThemeChange={handleThemeChange}
         onSubmitTheme={handleSubmitTheme}
@@ -147,7 +147,6 @@ function App() {
         onDeleteTheme={handleDeleteTheme}
       />
       <Theme
-        themes={themes}
         colors={themes.length > 0 ? currentTheme.colors : ""}
         onAddColor={handleAddColor}
         onDeleteColor={handleDeleteColor}
