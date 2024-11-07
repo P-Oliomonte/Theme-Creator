@@ -135,7 +135,7 @@ function App() {
   }
 
   return (
-    <>
+    <div className="theme-creator-container">
       <h1>Theme Creator</h1>
       <ThemeSelect
         themes={themes}
@@ -152,7 +152,7 @@ function App() {
         onDeleteColor={handleDeleteColor}
         onUpdateColor={handleUpdateColor}
       />
-    </>
+    </div>
   );
 }
 

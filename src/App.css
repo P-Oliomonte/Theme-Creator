@@ -5,4 +5,14 @@ body {
 
 h1 {
   padding: 10px;
+  text-align: center;
+  border-bottom: 1px solid gray;
+  background-color: #fff;
+}
+
+.theme-creator-container {
+  margin: 0 auto;
+  max-width: 600px;
+  border: 1px solid gray;
+  background-color: #efefef;
 }
